@@ -1,0 +1,27 @@
+# some features were better implemented using javascript as there are limited funtionalities for certain report types in oracle apex.
+
+
+#this snip is used to highlight rows in the inventory where the quantity is 0. It makes it easy to identify items that cant be borrowed.
+
+$('.emp [headers=QUANTITY]').each(function(){
+console.log($(this).text());
+var text=$(this).text();
+if (text == '0'){
+$(this).closest("tr").children().css({"background-color":"red"});
+$(this).closest("tr").children().css({"color":"white"});
+}
+});
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+#this snip is used to highlight users who are late in returning the equipment.
+
+
+$('.emp [headers=RETURN_DATE]').each(function(){
+console.log($(this).text());
+var text=$(this).text();
+if (text < $v("SYSDATEW")){
+$(this).closest("tr").children().css({"background-color":"red"});
+$(this).closest("tr").children().css({"color":"white"});
+}
+});
