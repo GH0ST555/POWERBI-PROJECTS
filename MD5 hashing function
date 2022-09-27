@@ -1,0 +1,12 @@
+# This PL/SQl function uses built Oracle toolkit to encrypt passwords it is used when the user creates an account and when they log in to the PPE app
+
+create or replace function "MD5"
+(pstring in VARCHAR2)
+return VARCHAR2
+is
+pwd varchar(32) := '';
+begin
+
+pwd := DBMS_OBFUSCATION_TOOLKIT.md5(input=> UTL_I18N.STRING_TO_RAW(pstring,'AL32UTF8'));
+RETURN pwd;
+end;
