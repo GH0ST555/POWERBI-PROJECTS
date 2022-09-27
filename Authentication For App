@@ -1,0 +1,14 @@
+# This code demonstrates my use of custom PL/SQL function to authenticate users from custom database where password is secured in 32 bit MD5 hashing.
+
+create or replace function "CUSTOM_AUTH"
+(p_username in VARCHAR2,
+p_password in VARCHAR2)
+return BOOLEAN
+as
+No Number:=0;
+BEGIN
+select 1 into No from paswd where username= p_username  and password = MD5(p_password);
+Return TRUE;
+EXCEPTION WHEN NO_DATA_FOUND THEN
+RETURN FALSE;
+END;
