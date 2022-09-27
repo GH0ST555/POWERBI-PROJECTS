@@ -1,0 +1,93 @@
+#These code snippets demonstrate the use of automated messages between the two classifications of users
+
+#This code paired with  apex automated email process sends email to the QA users when a user has submitted a request to borrow items. It also  provides a link directly to the approvals page so that the request can be approved/denied.
+
+User  has generated a PPE Request.  Please Reveiew the following<br>
+Employee Name : &P5_NAME. <br>
+Department : &P5_DEPARTMENT. <br>
+Request Link: &P5_REQUEST_ID. <br>
+
+<a href ='http://apex.oracle.com/pls/apex/f?p=&APP_ID.:17:&APP_SESSION.::::ID_FLAG:&P5_REQUEST_ID.'> Click here to view</a>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+# This snippet paired with  apex automated email process sends email to QA users when the user updates the request and also provides a direct link.
+
+User  has Updated the PPE Request.  Please Recheck the request before approval<br>
+Employee Name : &P10_NAME. <br>
+Department : &P10_DEPARTMENT. <br>
+Request Link: &P10_REQUEST_ID. <br>
+
+<a href ='http://apex.oracle.com/pls/apex/f?p=&APP_ID.:17:&APP_SESSION.::::ID_FLAG:&P10_REQUEST_ID.'> Click here to view</a>
+
+Regards,<br>
+&P10_NEW. <br>
+Quality Assurance<br> 
+Petrofac.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+#This snippet paired with  apex automated email process sends email to QA users when the user deletes the request. Also provides direct link.
+
+User  has Deleted the PPE Request<br>
+
+User: &P12_NAME.<br>
+Request Id:  &P12_REQUEST_ID.<br><br>
+Regards,<br>
+&P12_NEW. <br>
+Quality Assurance<br> 
+Petrofac.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#This snippet paired with  apex automated email process sends email to user when QA denies the request.
+
+Your Request &ID_FLAG. was denied. <br> 
+REASON: &REASON_FLAG. <br>
+For Furthur Information, Please Contact the QA Department <br><br><br><br>
+
+Regards,<br>
+&QA_NAME_FLAG. <br>
+QUALITY ASSURANCE DEPARTMENT <br>
+Petrofac.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#This snippet paired with  apex automated email process sends email when qa approves the request.
+
+
+Your Request was APPROVED <br> 
+Please Return the Borrowed items on time. <br><br><br><br>
+
+Regards,<br>
+&QA_NAME_FLAG. <br>
+QUALITY ASSURANCE DEPARTMENT <br>
+Petrofac.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
