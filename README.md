@@ -3,6 +3,7 @@
 These code snippets are used in my Inventory Management Application Using Oracle Application express.
 
 There are two main user classifications for the APP:
+
 1.> QA User--> These are users who belong to the QA department who are responsible for the borrowing and return of items required for site visits.has the ability to approve/deny requests, view the item inventory , view entire request history, view QA tailored dashboards and create requests.
 
 2.> Reg User --> Users of all other departments. has the ability to create request and approve/deny requests.
