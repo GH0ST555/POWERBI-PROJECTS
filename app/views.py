@@ -12,8 +12,15 @@ from flask_mail import Mail, Message
 #it is a sample view to test a sample JSON File with flask. as i am not very familiar with JSON i am trying an example
 
 @app.route('/')
-def test_load():
+def load_all():
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
     json_url = os.path.join(SITE_ROOT, "static", "adress.json")
     data = json.load(open(json_url))
-    return render_template('homepage.html', data=data)
+    return render_template('viewall.html', data=data)
+
+@app.route('/view')
+def load_record():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "static", "adress.json")
+    data = json.load(open(json_url))
+    return render_template('userpage.html', data=data)
