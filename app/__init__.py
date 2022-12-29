@@ -6,7 +6,7 @@ from flask_mail import Mail
 import logging
 
 app = Flask(__name__)
-# app.config.from_object('config')
+app.config.from_object('config')
 # app.config['MAIL_SERVER']='smtp.gmail.com'
 # app.config['MAIL_PORT'] = 465
 # app.config['MAIL_USERNAME'] = 'arjun.krishnan0033@gmail.com'

@@ -19,6 +19,17 @@
         <th scope="row">{{count.value}}</th>
         <td>{{ info.first_name }}</td>
         <td>{{ info.last_name }}</td>
+        <td>
+          <div>
+          <form action  ="/view/{{info.id}}" method = "post">
+            <input type = "submit" class = "btn btn-secondary" value = "View Details"></div> 
+        </form>
+
+          <form action  ="/delete/{{info.id}}" method = "post">
+            <input type = "submit" class = "btn btn-secondary" value = "Delete"></div> 
+        </form>
+        </div>
+        </td>
         <!-- <td>@mdo</td> -->
         {% set count.value = count.value + 1 %}
       </tr>
