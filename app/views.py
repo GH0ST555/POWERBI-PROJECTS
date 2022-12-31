@@ -18,7 +18,7 @@ def load_all():
     data = json.load(open(json_url))
     return render_template('viewall.html', data=data)
 
-
+#route that helps in creation of a new record
 @app.route('/create_user', methods=['GET','POST'])
 def create_record():
     form = NewRec()
@@ -30,6 +30,7 @@ def create_record():
             nid=row['id']
         newid = int(nid) + 1
         nid = str(newid)
+        #store all the data from the form into a dictionary
         dictionary = {
         "id": nid,
         "first_name":form.fname.data,
@@ -38,12 +39,10 @@ def create_record():
         "email":form.email.data
         }
         # Serializing json
-
+        #open the file to load data
         with open("app/static/adress.json", "r+") as f:
             data1=json.load(f)
         data1.append(dictionary)
-            
-
         # Writing to our flat file, we append the new data from our form.
         with open("app/static/adress.json", "w") as outfile:
             json.dump(data1, outfile, indent=4,  separators=(',',': '))
@@ -53,9 +52,7 @@ def create_record():
 
 @app.route('/delete/<id>', methods=['GET','POST'])
 def delete_record(id):
-    # SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    # json_url = os.path.join(SITE_ROOT, "static", "adress.json")
-    # datas = json.load(open(json_url))
+
     with open("app/static/adress.json", "r+") as f:
         data1=json.load(f)
     # Iterate through the objects in the JSON and pop (remove)                      
@@ -69,6 +66,40 @@ def delete_record(id):
     return redirect('/')   
 
     
+@app.route('/edit/<id>', methods=['GET','POST'])
+def edit_record(id):
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, "static", "adress.json")
+    datas = json.load(open(json_url))
+    
+    for row in datas:
+        if row['id'] == id:
+            p_row = row
+
+    form1 = NewRec(obj=p_row)
+    if form1.validate_on_submit():
+        with open("app/static/adress.json", "r+") as f:
+            data1=json.load(f)
+        # Iterate through the objects in the JSON and pop (remove)                      
+        # the obj once we find it.                                                      
+        for i in range(len(data1)):
+            if data1[i]["id"] == id:
+                data1.pop(i)
+                break
+        dictionary = {
+        "id": id,
+        "first_name":form1.fname.data,
+        "last_name": form1.lname.data,
+        "phone":str(form1.pno.data),
+        "email":form1.email.data
+        }
+        data1.append(dictionary)
+        data1.sort(key=lambda x: x["id"])
+        with open("app/static/adress.json", "w") as outfile:
+            json.dump(data1, outfile, indent=4,  separators=(',',': '))
+            return redirect('/')
+        
+    return render_template('edit.html',form=form1,data=p_row)
 
 
 @app.route('/view/<id>', methods=['GET','POST'])
