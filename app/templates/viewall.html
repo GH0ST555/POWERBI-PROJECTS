@@ -21,12 +21,12 @@
         <td>{{ info.last_name }}</td>
         <td>
           <div>
-          <form action  ="/view/{{info.id}}" method = "post">
-            <input type = "submit" class = "btn btn-secondary" value = "View Details"></div> 
+          <form action  ="/view?id={{info.id}}" method = "post">
+            <input type = "submit" class = "btn btn-secondary" value = "View Details"> 
         </form>
 
           <form action  ="/delete/{{info.id}}" method = "post">
-            <input type = "submit" class = "btn btn-secondary" value = "Delete"></div> 
+            <input type = "submit" class = "btn btn-secondary" value = "Delete">
         </form>
         </div>
         </td>

@@ -3,28 +3,33 @@
 #import relevant modules
 import os
 from app import app
-from flask import render_template, flash,redirect,request, make_response,json,url_for
+from flask import render_template, flash,redirect,request, make_response,json,url_for,jsonify
 from flask_login import LoginManager,login_required,logout_user,login_user,current_user
 from flask_mail import Mail, Message
 from .forms import NewRec
+
+
 
 
 #it is a sample view to test a sample JSON File with flask. as i am not very familiar with JSON i am trying an example
 
 @app.route('/', methods=['GET','POST'])
 def load_all():
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "static", "adress.json")
-    data = json.load(open(json_url))
+    #loads the first and last name from the json file
+    #embeds the data into a template
+    with open("app/static/adress.json", "r+") as f:
+        data=json.load(f)
+        f.close()
     return render_template('viewall.html', data=data)
+
 
 #route that helps in creation of a new record
 @app.route('/create_user', methods=['GET','POST'])
 def create_record():
     form = NewRec()
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "static", "adress.json")
-    data = json.load(open(json_url))
+    with open("app/static/adress.json", "r+") as f:
+        data=json.load(f)
+        f.close()
     if form.validate_on_submit():
         for row in data:
             nid=row['id']
@@ -42,19 +47,21 @@ def create_record():
         #open the file to load data
         with open("app/static/adress.json", "r+") as f:
             data1=json.load(f)
+            f.close()
         data1.append(dictionary)
         # Writing to our flat file, we append the new data from our form.
         with open("app/static/adress.json", "w") as outfile:
             json.dump(data1, outfile, indent=4,  separators=(',',': '))
+            outfile.close()
             return redirect('/')
             
     return render_template('create.html', form=form)
 
 @app.route('/delete/<id>', methods=['GET','POST'])
 def delete_record(id):
-
     with open("app/static/adress.json", "r+") as f:
         data1=json.load(f)
+        f.close()
     # Iterate through the objects in the JSON and pop (remove)                      
     # the obj once we find it.                                                      
     for i in range(len(data1)):
@@ -62,21 +69,28 @@ def delete_record(id):
             data1.pop(i)
             break
     with open("app/static/adress.json", "w") as outfile:
-        json.dump(data1, outfile, indent=4,  separators=(',',': '))            
+        json.dump(data1, outfile, indent=4,  separators=(',',': '))    
+        outfile.close()        
     return redirect('/')   
 
     
 @app.route('/edit/<id>', methods=['GET','POST'])
 def edit_record(id):
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "static", "adress.json")
-    datas = json.load(open(json_url))
+    #to edit the record we do it a bit creativrly
+    #we delete the record and re-enter the updated data
+    #id's also get sorted in ascending oreder to ensure no errors ocour when data is added
+    p_row=None
+    with open("app/static/adress.json", "r+") as f:
+        datas=json.load(f)
+        f.close()
     
     for row in datas:
         if row['id'] == id:
             p_row = row
+    if p_row is None:
+        return render_template('404.html'), 404
 
-    form1 = NewRec(obj=p_row)
+    form1 = NewRec()
     if form1.validate_on_submit():
         with open("app/static/adress.json", "r+") as f:
             data1=json.load(f)
@@ -97,17 +111,27 @@ def edit_record(id):
         data1.sort(key=lambda x: x["id"])
         with open("app/static/adress.json", "w") as outfile:
             json.dump(data1, outfile, indent=4,  separators=(',',': '))
+            outfile.close()
             return redirect('/')
         
     return render_template('edit.html',form=form1,data=p_row)
 
 
-@app.route('/view/<id>', methods=['GET','POST'])
-def load_record(id):
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, "static", "adress.json")
-    datas = json.load(open(json_url))
+@app.route('/view', methods=['GET','POST'])
+def load_record():
+    #gets the id from the request
+    #get the row information from the id
+    #start get the json record and embedd it into template
+    id = request.args.get('id')  
+    p_row=None
+    with open("app/static/adress.json", "r+") as f:
+        datas=json.load(f)
+        f.close()
     for row in datas:
         if row['id'] == id:
             p_row = row
+    if p_row is None:
+        return render_template('404.html'), 404
     return render_template('userpage.html', data=p_row)
+
+   
