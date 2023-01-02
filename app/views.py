@@ -20,6 +20,8 @@ def load_all():
     with open("app/static/adress.json", "r+") as f:
         data=json.load(f)
         f.close()
+    if data is None:
+        return render_template('404.html'), 404
     return render_template('viewall.html', data=data)
 
 
@@ -59,9 +61,15 @@ def create_record():
 
 @app.route('/delete/<id>', methods=['GET','POST'])
 def delete_record(id):
+    p_row=None
     with open("app/static/adress.json", "r+") as f:
         data1=json.load(f)
         f.close()
+    for row in data1:
+        if row['id'] == id:
+            p_row = row
+    if p_row is None:
+        return render_template('404.html'), 404
     # Iterate through the objects in the JSON and pop (remove)                      
     # the obj once we find it.                                                      
     for i in range(len(data1)):
