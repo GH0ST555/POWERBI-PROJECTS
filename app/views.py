@@ -60,6 +60,8 @@ def create_record():
     return render_template('create.html', form=form)
 
 @app.route('/delete/<id>', methods=['GET','POST'])
+#deeltes a row using its id
+#redirects to homepage after deletion
 def delete_record(id):
     p_row=None
     with open("app/static/adress.json", "r+") as f:
